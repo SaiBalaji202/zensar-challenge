@@ -29,6 +29,7 @@
         >
 
         <button
+          type="button"
           class="btn btn-primary"
           (click)="imgBrowseBtn.click()"
           [ngClass]="{ 'btn-error': !userForm?.get('Image')?.valid }"

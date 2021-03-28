@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsersStore } from '@app/users/store/users.store';
 import { UserProfile } from './../../models/profile.model';
+import { mimeTypeValidator } from './../../../shared/validators/mime-type-validator';
 
 export type FormOperation = 'ADD' | 'EDIT';
 
@@ -27,7 +28,7 @@ export class ProfileFormComponent implements OnInit {
     this.initFormOperation();
     this.loadFormData();
     if (!this.defaultFormData) {
-      this.goBack();
+      // this.goBack();
     } else {
       this.initForm();
     }
@@ -53,14 +54,17 @@ export class ProfileFormComponent implements OnInit {
     }
   }
 
-  initForm() {
+  initForm(): void {
     const { name, Image } = this.defaultFormData;
     this.userForm = new FormGroup({
       name: new FormControl(name, [
         Validators.required,
         Validators.minLength(4),
       ]),
-      Image: new FormControl(Image, Validators.required),
+      Image: new FormControl(Image, {
+        validators: [Validators.required],
+        asyncValidators: [mimeTypeValidator],
+      }),
     });
   }
 
@@ -87,11 +91,15 @@ export class ProfileFormComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  deleteUser() {
+  deleteUser(): void {
     if (this.defaultFormData.id) {
       this.usersStore.deleteUser(this.defaultFormData.id);
       this.goBack();
     }
+  }
+
+  cancel(): void {
+    this.goBack();
   }
 
   submit(): void {
