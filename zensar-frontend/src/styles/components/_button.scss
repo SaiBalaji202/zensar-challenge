@@ -1,0 +1,50 @@
+@import "../abstract/colors";
+
+// ///////////////////////
+// Button
+// ///////////////////////
+.btn {
+  padding: 1rem 3rem;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  transition: background 0.25s;
+
+  &:disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    background: #777;
+  }
+}
+
+.btn-primary {
+  background: $primary;
+  color: $on-primary;
+  border: 1px solid $primary;
+
+  &:hover {
+    border: 1px solid $primary-dark;
+    background: $primary-dark;
+  }
+}
+
+.btn-error {
+  background: $error;
+  border: 1px solid $error;
+  color: $on-error;
+
+  &:hover {
+    border: 1px solid darken($error, 10%);
+    background: darken($error, 10%);
+  }
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid $primary;
+  color: $on-base;
+
+  &:hover {
+    background: $primary;
+    color: $base;
+  }
+}

@@ -1,0 +1,67 @@
+<div
+  class="user-form-wrapper card"
+  [ngClass]="{ 'full-height-card': userForm?.get('Image')?.valid }"
+>
+  <div class="header" [ngClass]="{ close: formOperation === 'EDIT' }">
+    <h1>{{ formOperation === "ADD" ? "Add User" : "Edit User" }}</h1>
+    <span
+      class="close-icon"
+      *ngIf="formOperation === 'EDIT'"
+      (click)="deleteUser()"
+    >
+      X
+    </span>
+  </div>
+
+  <form [formGroup]="userForm" (ngSubmit)="submit()">
+    <!-- New Row -->
+    <div class="form-row">
+      <div class="image-preview-container">
+        <div class="img-preview" *ngIf="userForm?.get('Image')?.valid">
+          <img [src]="avatarPreview" />
+        </div>
+        <span
+          class="err-msg"
+          *ngIf="
+            !userForm?.get('Image')?.valid && userForm?.get('Image')?.touched
+          "
+          >Invalid User Image</span
+        >
+
+        <button
+          class="btn btn-primary"
+          (click)="imgBrowseBtn.click()"
+          [ngClass]="{ 'btn-error': !userForm?.get('Image')?.valid }"
+        >
+          Pick Photo
+        </button>
+
+        <input
+          type="file"
+          name="pick-img"
+          id="pick-img"
+          accept="image/x-png,image/jpeg,image/jpg"
+          (change)="onImgChange($event)"
+          #imgBrowseBtn
+        />
+      </div>
+    </div>
+
+    <!-- New Row -->
+    <div class="form-row">
+      <label for="name">Name</label>
+      <input type="text" id="name" [formControlName]="'name'" />
+      <span
+        class="err-msg"
+        *ngIf="!userForm?.get('name')?.valid && userForm?.get('name')?.touched"
+        >Invalid User Name</span
+      >
+    </div>
+
+    <!-- New Row -->
+    <div class="form-row controls">
+      <button class="btn btn-outline" type="button">Cancel</button>
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+  </form>
+</div>

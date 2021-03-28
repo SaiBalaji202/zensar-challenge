@@ -1,0 +1,30 @@
+@import "../abstract/fonts";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+a,
+button {
+  background: none;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:active,
+a:hover,
+button:active,
+button:hover {
+  outline-width: 0;
+}
+
+li {
+  list-style: none;
+}

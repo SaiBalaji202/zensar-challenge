@@ -1,0 +1,11 @@
+<ng-container *ngIf="messages$ | async as messages">
+  <div class="messages-container" *ngIf="showMessages">
+    <!-- close -->
+    <span class="close" (click)="onClose()"> x </span>
+    <ul class="messages">
+      <li class="message" *ngFor="let message of messages">
+        &bull; {{ message }}
+      </li>
+    </ul>
+  </div>
+</ng-container>

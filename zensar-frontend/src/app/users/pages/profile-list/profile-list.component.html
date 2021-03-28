@@ -1,0 +1,17 @@
+<div class="header">
+  <h1>Users List</h1>
+  <button (click)="navigateToUserForm()" class="btn btn-primary">
+    Add User
+  </button>
+</div>
+
+<div class="body">
+  <ul class="users">
+    <li *ngFor="let user of usersStore.users$ | async">
+      <zensar-profile-card
+        (click)="navigateToUserForm(user.id)"
+        [user]="user"
+      ></zensar-profile-card>
+    </li>
+  </ul>
+</div>

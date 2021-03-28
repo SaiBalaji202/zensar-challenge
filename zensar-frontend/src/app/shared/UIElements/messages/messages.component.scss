@@ -1,0 +1,31 @@
+@import "styles/abstract/colors";
+
+$warn-bg: #f1c40f;
+$warn-border: #f39c12;
+
+.messages-container {
+  display: block;
+  position: relative;
+  padding: 0.8rem;
+  background-color: $error;
+  color: $on-error;
+  border: 2px solid lighten($error, 10%);
+}
+
+.message {
+  font-size: 1.25rem;
+}
+
+.close {
+  position: absolute;
+  top: 1px;
+  right: 4px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: darken($on-error, 15%);
+  transition: color 0.25s;
+}
+
+.close:hover {
+  color: $on-error;
+}

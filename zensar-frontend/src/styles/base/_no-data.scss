@@ -1,0 +1,12 @@
+@import "../abstract/colors";
+
+// ///////////////////////
+// No Data
+// ///////////////////////
+.no-data {
+  color: $error;
+  font-weight: 400;
+  font-size: 1.8rem;
+  letter-spacing: 1.2;
+  text-align: center;
+}

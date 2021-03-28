@@ -1,0 +1,39 @@
+@import "styles/abstract/_mixins";
+@import "styles/abstract/_colors";
+
+:host {
+  display: block;
+}
+
+.profile-card {
+  @include flex(column, center, center);
+
+  background-image: linear-gradient(
+    to bottom right,
+    $success 50%,
+    $on-secondary 50%
+  );
+  color: $secondary;
+  font-size: 2.4rem;
+  letter-spacing: 1px;
+
+  width: 22rem;
+  height: 22rem;
+  overflow: hidden;
+
+  &__img {
+    margin-bottom: 1rem;
+    img {
+      display: inline-block;
+      height: 10rem;
+      width: 10rem;
+      border-radius: 50%;
+    }
+  }
+
+  &__details {
+    li {
+      text-align: center;
+    }
+  }
+}

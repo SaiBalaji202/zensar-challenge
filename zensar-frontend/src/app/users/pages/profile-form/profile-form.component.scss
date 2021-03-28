@@ -1,0 +1,74 @@
+@import "styles/abstract/mixins";
+@import "styles/abstract/colors";
+
+:host {
+  display: block;
+  text-align: center;
+}
+
+.user-form-wrapper {
+  display: inline-block;
+  text-align: center;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+form {
+  margin: 0 2rem;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.form-row:not(:last-of-type) {
+  margin-bottom: 1rem;
+}
+
+.controls {
+  & > *:not(:last-child) {
+    margin-right: 0.5rem;
+  }
+}
+
+.image-preview-container {
+  @include flex(column, center, center);
+}
+
+.img-preview {
+  height: 7.5rem;
+  width: 7.5rem;
+  margin-bottom: 1rem;
+
+  img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+  }
+}
+
+label {
+  display: block;
+}
+
+.card {
+  max-height: 30rem;
+}
+
+.full-height-card {
+  height: 100%;
+}
+
+.err-msg {
+  display: block;
+  color: $error;
+}
+
+.header.close {
+  @include flex(row, space-between, center);
+
+  .close-icon {
+    font-size: 1.4rem;
+    color: $error;
+  }
+}

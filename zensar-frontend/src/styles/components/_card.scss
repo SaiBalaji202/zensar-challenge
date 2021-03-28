@@ -1,0 +1,19 @@
+@import "../abstract/colors";
+
+.card {
+  display: inline-block;
+  border-radius: 4px;
+  cursor: pointer;
+  overflow: hidden;
+  height: 20rem;
+
+  background-color: $base;
+  color: $on-base;
+  padding: 1.6rem 1.2rem;
+  box-shadow: 0 1.5rem 4rem rgba($color: $on-base, $alpha: 0.15);
+  transition: all 0.25s;
+
+  &:hover {
+    box-shadow: 0 1.5rem 4rem rgba($color: $on-base, $alpha: 0.45);
+  }
+}

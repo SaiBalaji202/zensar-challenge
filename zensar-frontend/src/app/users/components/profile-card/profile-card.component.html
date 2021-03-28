@@ -1,0 +1,8 @@
+<div class="profile-card card">
+  <div class="profile-card__img">
+    <img [src]="user.Image | safeUrl" alt="Avatar" />
+  </div>
+  <ul class="profile-card__details">
+    <li>{{ user.name }}</li>
+  </ul>
+</div>

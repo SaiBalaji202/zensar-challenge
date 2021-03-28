@@ -1,0 +1,14 @@
+@import "styles/abstract/mixins";
+
+.header {
+  @include flex(row, space-between);
+}
+
+.users {
+  @include flex(row, center, center);
+  margin: 2rem 0;
+
+  & > * {
+    margin: 2rem;
+  }
+}

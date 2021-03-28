@@ -1,0 +1,23 @@
+@import "../abstract/colors";
+
+// ///////////////////////
+// Anchor Tag
+// ///////////////////////
+
+a {
+  display: inline-block;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  padding-bottom: 2px;
+
+  font-weight: 500;
+  color: $primary;
+
+  border-bottom: 1px solid transparent;
+  transition: all 0.25s;
+
+  &:hover {
+    color: $primary-dark;
+    border-bottom: 1px solid $primary-dark;
+  }
+}
