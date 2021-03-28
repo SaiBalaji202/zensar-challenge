@@ -21,24 +21,21 @@ router.get('/:id', validateObjectId, userController.getUserById);
 router.post(
   '/',
   [
-    check('name', 'Name is required').trim().not().isEmpty(),
-    check('image', 'Image is required').not().isEmpty(),
+    // [
+    //   check('name', 'Name is required').trim().not().isEmpty(),
+    //   check('image', 'Image is required').not().isEmpty(),
+    // ],
+    userController.uploadUserImage,
   ],
   userController.addUser
 );
 
 // @route   PUT api/user/:id
-// @desc    Udate User By Id.  If User Not found, Create New User
+// @desc    Udate User By Id
 // @access  Public
 router.put(
   '/:id',
-  [
-    validateObjectId,
-    [
-      check('name', 'Name is required').trim().not().isEmpty(),
-      check('image', 'Image is required').not().isEmpty(),
-    ],
-  ],
+  [validateObjectId, userController.uploadUserImage],
   userController.updateUser
 );
 
