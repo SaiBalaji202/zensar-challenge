@@ -25,6 +25,9 @@ exports.addUser = catchAsync(async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
+  if (!req.file) {
+    return res.status(400).json({ msg: 'Invalid Image Data' });
+  }
 
   const imagePath = `${req.protocol}://${req.get('host')}/images/${
     req.file.filename
@@ -42,6 +45,9 @@ exports.updateUser = catchAsync(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
+  }
+  if (!req.file) {
+    return res.status(400).json({ msg: 'Invalid Image Data' });
   }
 
   let user = await User.findById(req.params.id);
@@ -95,12 +101,13 @@ const multerStorage = multer.diskStorage({
     cb(null, `${req.body.name}-${Date.now()}.${ext}`);
   },
 });
+// const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')) {
     cb(null, true);
   } else {
-    cb({ msg: 'Invalid Image' }, false);
+    cb(null, false);
   }
 };
 
@@ -110,3 +117,5 @@ const upload = multer({
 });
 
 exports.uploadUserImage = upload.single('image');
+
+// Sharp - For Image Resize
