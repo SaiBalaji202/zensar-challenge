@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { validationResult } = require('express-validator');
 const multer = require('multer');
+const sharp = require('sharp');
 const User = require('../models/User');
 const catchAsync = require('../utils/catchAsync');
 
@@ -91,17 +92,19 @@ exports.deleteUser = catchAsync(async (req, res) => {
   return res.json({ msg: 'User Deleted Successfully' });
 });
 
+// // MULTER - Disk Storage
+// const multerStorage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'images/users');
+//   },
+//   filename: (req, file, cb) => {
+//     const ext = file.mimetype.split('/')[1];
+//     cb(null, `${req.body.name}-${Date.now()}.${ext}`);
+//   },
+// });
+
 // MULTER
-const multerStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'images/users');
-  },
-  filename: (req, file, cb) => {
-    const ext = file.mimetype.split('/')[1];
-    cb(null, `${req.body.name}-${Date.now()}.${ext}`);
-  },
-});
-// const multerStorage = multer.memoryStorage();
+const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')) {
@@ -119,3 +122,17 @@ const upload = multer({
 exports.uploadUserImage = upload.single('image');
 
 // Sharp - For Image Resize
+exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
+  if (!req.file) {
+    return;
+  }
+
+  req.file.filename = `${req.body.name}-${Date.now()}.jpeg`;
+  console.log(req.body);
+  await sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`images/users/${req.file.filename}`);
+  next();
+});

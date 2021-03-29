@@ -22,6 +22,7 @@ router.post(
   '/',
   [
     userController.uploadUserImage,
+    userController.resizeUserPhoto,
     [
       check('name', 'Name should have atleast 4 characters')
         .trim()
@@ -39,6 +40,7 @@ router.put(
   [
     validateObjectId,
     userController.uploadUserImage,
+    userController.resizeUserPhoto,
     [
       check('name', 'Name should have atleast 4 characters')
         .trim()
