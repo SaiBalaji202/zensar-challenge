@@ -116,7 +116,7 @@ export class ProfileFormComponent implements OnInit {
       updateUser$ = this.usersStore.updateUser(
         this.defaultFormData._id,
         name,
-        this.avatarPreview
+        image
       );
     }
     updateUser$.subscribe(() => this.goBack());

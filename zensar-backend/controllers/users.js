@@ -48,10 +48,11 @@ exports.updateUser = catchAsync(async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
+  console.log('**');
   if (!req.file) {
     return res.status(400).json({ msg: 'Invalid Image Data' });
   }
-
+  console.log('**');
   let user = await User.findById(req.params.id);
   if (!user) {
     return res

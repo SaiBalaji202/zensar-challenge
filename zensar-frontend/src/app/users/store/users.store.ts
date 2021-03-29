@@ -33,13 +33,13 @@ export class UsersStore {
     return this.usersSubject.getValue()?.find((user) => user._id === userId);
   }
 
-  public updateUser(userId: string, name: string, image: string) {
+  public updateUser(userId: string, name: string, image: Blob) {
     const userFormData = new FormData();
     userFormData.append('name', name);
     userFormData.append('image', image);
 
     const updateUser$ = this.http
-      .post<UserProfile>(this.URL + userId, userFormData)
+      .put<UserProfile>(this.URL + '/' + userId, userFormData)
       .pipe(
         tap((user) => {
           const users = this.usersSubject.getValue();
