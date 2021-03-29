@@ -42,7 +42,7 @@ export class ProfileFormComponent implements OnInit {
   loadFormData() {
     if (this.formOperation === 'ADD') {
       this.defaultFormData = {
-        Image: null,
+        image: null,
         name: null,
         id: null,
       };
@@ -50,18 +50,18 @@ export class ProfileFormComponent implements OnInit {
       this.defaultFormData = this.usersStore.getUserById(
         this.route.snapshot.params.id
       );
-      this.avatarPreview = this.defaultFormData?.Image;
+      this.avatarPreview = this.defaultFormData?.image;
     }
   }
 
   initForm(): void {
-    const { name, Image } = this.defaultFormData;
+    const { name, image } = this.defaultFormData;
     this.userForm = new FormGroup({
       name: new FormControl(name, [
         Validators.required,
         Validators.minLength(4),
       ]),
-      Image: new FormControl(Image, {
+      image: new FormControl(image, {
         validators: [Validators.required],
         asyncValidators: [mimeTypeValidator],
       }),
@@ -80,9 +80,9 @@ export class ProfileFormComponent implements OnInit {
       this.userForm.markAsDirty();
     }
 
-    this.userForm.patchValue({ Image: file });
-    this.userForm.get('Image').markAsTouched();
-    this.userForm.get('Image').updateValueAndValidity();
+    this.userForm.patchValue({ image: file });
+    this.userForm.get('image').markAsTouched();
+    this.userForm.get('image').updateValueAndValidity();
 
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -107,7 +107,7 @@ export class ProfileFormComponent implements OnInit {
       return;
     }
 
-    const { name, Image } = this.userForm.value;
+    const { name, image } = this.userForm.value;
     if (this.formOperation === 'ADD') {
       this.usersStore.addUser(name, this.avatarPreview);
     } else {

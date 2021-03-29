@@ -1,6 +1,6 @@
 <div
   class="user-form-wrapper card"
-  [ngClass]="{ 'full-height-card': userForm?.get('Image')?.valid }"
+  [ngClass]="{ 'full-height-card': userForm?.get('image')?.valid }"
 >
   <div class="header" [ngClass]="{ close: formOperation === 'EDIT' }">
     <h1>{{ formOperation === "ADD" ? "Add User" : "Edit User" }}</h1>
@@ -17,13 +17,13 @@
     <!-- New Row -->
     <div class="form-row">
       <div class="image-preview-container">
-        <div class="img-preview" *ngIf="userForm?.get('Image')?.valid">
+        <div class="img-preview" *ngIf="userForm?.get('image')?.valid">
           <img [src]="avatarPreview" />
         </div>
         <span
           class="err-msg"
           *ngIf="
-            !userForm?.get('Image')?.valid && userForm?.get('Image')?.touched
+            !userForm?.get('image')?.valid && userForm?.get('image')?.touched
           "
           >Invalid User Image</span
         >
@@ -32,7 +32,7 @@
           type="button"
           class="btn btn-primary"
           (click)="imgBrowseBtn.click()"
-          [ngClass]="{ 'btn-error': !userForm?.get('Image')?.valid }"
+          [ngClass]="{ 'btn-error': !userForm?.get('image')?.valid }"
         >
           Pick Photo
         </button>

@@ -12,13 +12,14 @@ import { SpinnerService } from './../../shared/UIElements/spinner/spinner.servic
 export class UsersStore {
   private usersSubject = new BehaviorSubject<UserProfile[]>([]);
   users$ = this.usersSubject.asObservable();
+  URL = environment.api.url + '/user';
 
   constructor(private http: HttpClient, private loading: SpinnerService) {
     this.fetchUserProfiles()?.subscribe();
   }
 
   private fetchUserProfiles(): Observable<UserProfile[]> {
-    const users$ = this.http.get<UserProfile[]>(environment.api.zensarUrl).pipe(
+    const users$ = this.http.get<UserProfile[]>(this.URL).pipe(
       tap((users) => {
         console.log(users);
         this.usersSubject.next(users);
@@ -32,21 +33,21 @@ export class UsersStore {
     return this.usersSubject.getValue()?.find((user) => user.id === userId);
   }
 
-  public updateUser(userId: string, name: string, Image: string) {
+  public updateUser(userId: string, name: string, image: string) {
     const users = this.usersSubject.getValue();
     const idx = users?.findIndex((user) => user.id === userId);
     if (idx && idx !== -1) {
-      users[idx] = { ...users[idx], name, Image };
+      users[idx] = { ...users[idx], name, image };
       this.usersSubject.next(users);
     }
   }
 
-  public addUser(name: string, Image: string) {
+  public addUser(name: string, image: string) {
     const users = this.usersSubject.getValue();
     const userId = Math.ceil(Math.random() * 100).toString();
     users.push({
       name,
-      Image,
+      image,
       id: userId,
     });
     this.usersSubject.next(users);
