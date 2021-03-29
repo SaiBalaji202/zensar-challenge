@@ -9,7 +9,7 @@
   <ul class="users">
     <li *ngFor="let user of usersStore.users$ | async">
       <zensar-profile-card
-        (click)="navigateToUserForm(user.id)"
+        (click)="navigateToUserForm(user._id)"
         [user]="user"
       ></zensar-profile-card>
     </li>

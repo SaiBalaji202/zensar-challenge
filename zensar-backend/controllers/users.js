@@ -22,6 +22,7 @@ exports.getUserById = catchAsync(async (req, res) => {
 
 // Create User
 exports.addUser = catchAsync(async (req, res) => {
+  console.log('Add new user');
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });

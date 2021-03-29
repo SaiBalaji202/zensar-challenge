@@ -30,33 +30,48 @@ export class UsersStore {
   }
 
   public getUserById(userId: string): UserProfile {
-    return this.usersSubject.getValue()?.find((user) => user.id === userId);
+    return this.usersSubject.getValue()?.find((user) => user._id === userId);
   }
 
   public updateUser(userId: string, name: string, image: string) {
-    const users = this.usersSubject.getValue();
-    const idx = users?.findIndex((user) => user.id === userId);
-    if (idx && idx !== -1) {
-      users[idx] = { ...users[idx], name, image };
-      this.usersSubject.next(users);
-    }
+    const userFormData = new FormData();
+    userFormData.append('name', name);
+    userFormData.append('image', image);
+
+    const updateUser$ = this.http
+      .post<UserProfile>(this.URL + userId, userFormData)
+      .pipe(
+        tap((user) => {
+          const users = this.usersSubject.getValue();
+          const idx = users?.findIndex((user) => user._id === userId);
+          if (idx && idx !== -1) {
+            users[idx] = { ...user };
+            this.usersSubject.next(users);
+          }
+        })
+      );
+    return this.loading.spinUntilComplete(updateUser$);
   }
 
-  public addUser(name: string, image: string) {
-    const users = this.usersSubject.getValue();
-    const userId = Math.ceil(Math.random() * 100).toString();
-    users.push({
-      name,
-      image,
-      id: userId,
-    });
-    this.usersSubject.next(users);
+  public addUser(name: string, image: Blob) {
+    const userFormData = new FormData();
+    userFormData.append('name', name);
+    userFormData.append('image', image);
+
+    const pushUser$ = this.http.post<UserProfile>(this.URL, userFormData).pipe(
+      tap((user) => {
+        const users = this.usersSubject.getValue();
+        users.push(user);
+        this.usersSubject.next(users);
+      })
+    );
+    return this.loading.spinUntilComplete(pushUser$);
   }
 
   public deleteUser(userId: string) {
     const users = this.usersSubject
       .getValue()
-      ?.filter((user) => user.id !== userId);
+      ?.filter((user) => user._id !== userId);
     this.usersSubject.next(users);
   }
 }

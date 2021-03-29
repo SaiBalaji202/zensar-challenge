@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UsersStore } from '@app/users/store/users.store';
 import { UserProfile } from './../../models/profile.model';
 import { mimeTypeValidator } from './../../../shared/validators/mime-type-validator';
+import { Observable } from 'rxjs';
 
 export type FormOperation = 'ADD' | 'EDIT';
 
@@ -44,7 +45,7 @@ export class ProfileFormComponent implements OnInit {
       this.defaultFormData = {
         image: null,
         name: null,
-        id: null,
+        _id: null,
       };
     } else {
       this.defaultFormData = this.usersStore.getUserById(
@@ -92,8 +93,8 @@ export class ProfileFormComponent implements OnInit {
   }
 
   deleteUser(): void {
-    if (this.defaultFormData.id) {
-      this.usersStore.deleteUser(this.defaultFormData.id);
+    if (this.defaultFormData._id) {
+      this.usersStore.deleteUser(this.defaultFormData._id);
       this.goBack();
     }
   }
@@ -107,17 +108,18 @@ export class ProfileFormComponent implements OnInit {
       return;
     }
 
+    let updateUser$: Observable<UserProfile>;
     const { name, image } = this.userForm.value;
     if (this.formOperation === 'ADD') {
-      this.usersStore.addUser(name, this.avatarPreview);
+      updateUser$ = this.usersStore.addUser(name, image);
     } else {
-      this.usersStore.updateUser(
-        this.defaultFormData.id,
+      updateUser$ = this.usersStore.updateUser(
+        this.defaultFormData._id,
         name,
         this.avatarPreview
       );
     }
-    this.goBack();
+    updateUser$.subscribe(() => this.goBack());
   }
 
   goBack(): void {
