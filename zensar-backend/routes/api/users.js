@@ -21,11 +21,12 @@ router.get('/:id', validateObjectId, userController.getUserById);
 router.post(
   '/',
   [
-    // [
-    //   check('name', 'Name is required').trim().not().isEmpty(),
-    //   check('image', 'Image is required').not().isEmpty(),
-    // ],
     userController.uploadUserImage,
+    [
+      check('name', 'Name should have atleast 4 characters')
+        .trim()
+        .isLength({ min: 4 }),
+    ],
   ],
   userController.addUser
 );
@@ -35,7 +36,15 @@ router.post(
 // @access  Public
 router.put(
   '/:id',
-  [validateObjectId, userController.uploadUserImage],
+  [
+    validateObjectId,
+    userController.uploadUserImage,
+    [
+      check('name', 'Name should have atleast 4 characters')
+        .trim()
+        .isLength({ min: 4 }),
+    ],
+  ],
   userController.updateUser
 );
 
