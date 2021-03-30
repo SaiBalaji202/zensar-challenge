@@ -93,16 +93,20 @@ export class ProfileFormComponent implements OnInit {
   }
 
   onDeleteUser(): void {
-    if (this.defaultFormData._id) {
-      this.usersStore.deleteUser(this.defaultFormData._id);
-      this.goBack();
+    if (
+      this.defaultFormData._id &&
+      confirm('Do you want to Delete this User?')
+    ) {
+      this.usersStore
+        .deleteUser(this.defaultFormData._id)
+        .subscribe(() => this.goBack());
     }
   }
 
   cancel(): void {
     if (
       !this.userForm.dirty ||
-      confirm('Do you want to Discard your changes')
+      confirm('Do you want to Discard your changes?')
     ) {
       this.goBack();
     }

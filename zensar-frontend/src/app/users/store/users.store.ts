@@ -72,10 +72,15 @@ export class UsersStore {
     return this.loading.spinUntilComplete(pushUser$);
   }
 
-  public deleteUser(userId: string): void {
-    const users = this.usersSubject
-      .getValue()
-      ?.filter((user) => user._id !== userId);
-    this.usersSubject.next(users);
+  public deleteUser(userId: string): Observable<any> {
+    const deleteUser$ = this.http.delete(this.URL + '/' + userId).pipe(
+      tap(() => {
+        const users = this.usersSubject
+          .getValue()
+          ?.filter((user) => user._id !== userId);
+        this.usersSubject.next(users);
+      })
+    );
+    return this.loading.spinUntilComplete(deleteUser$);
   }
 }

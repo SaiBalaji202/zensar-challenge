@@ -68,7 +68,12 @@ label {
   @include flex(row, space-between, center);
 
   .close-icon {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     color: $error;
+    transition: color 0.25s;
+
+    &:hover {
+      color: darken($color: $error, $amount: 10%);
+    }
   }
 }
