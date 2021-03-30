@@ -33,7 +33,11 @@ export class UsersStore {
     return this.usersSubject.getValue()?.find((user) => user._id === userId);
   }
 
-  public updateUser(userId: string, name: string, image: Blob) {
+  public updateUser(
+    userId: string,
+    name: string,
+    image: Blob
+  ): Observable<UserProfile> {
     const userFormData = new FormData();
     userFormData.append('name', name);
     userFormData.append('image', image);
@@ -53,7 +57,7 @@ export class UsersStore {
     return this.loading.spinUntilComplete(updateUser$);
   }
 
-  public addUser(name: string, image: Blob) {
+  public addUser(name: string, image: Blob): Observable<UserProfile> {
     const userFormData = new FormData();
     userFormData.append('name', name);
     userFormData.append('image', image);
@@ -68,7 +72,7 @@ export class UsersStore {
     return this.loading.spinUntilComplete(pushUser$);
   }
 
-  public deleteUser(userId: string) {
+  public deleteUser(userId: string): void {
     const users = this.usersSubject
       .getValue()
       ?.filter((user) => user._id !== userId);

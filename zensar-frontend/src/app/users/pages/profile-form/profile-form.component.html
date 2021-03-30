@@ -7,7 +7,7 @@
     <span
       class="close-icon"
       *ngIf="formOperation === 'EDIT'"
-      (click)="deleteUser()"
+      (click)="onDeleteUser()"
     >
       X
     </span>
@@ -61,7 +61,9 @@
 
     <!-- New Row -->
     <div class="form-row controls">
-      <button class="btn btn-outline" type="button">Cancel</button>
+      <button class="btn btn-outline" type="button" (click)="cancel()">
+        Cancel
+      </button>
       <button class="btn btn-primary" type="submit">Submit</button>
     </div>
   </form>

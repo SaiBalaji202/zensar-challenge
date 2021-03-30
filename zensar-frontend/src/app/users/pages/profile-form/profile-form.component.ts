@@ -29,18 +29,18 @@ export class ProfileFormComponent implements OnInit {
     this.initFormOperation();
     this.loadFormData();
     if (!this.defaultFormData) {
-      // this.goBack();
+      this.goBack();
     } else {
       this.initForm();
     }
   }
 
-  initFormOperation() {
+  initFormOperation(): void {
     this.formOperation =
       this.route.snapshot.params.id === 'new' ? 'ADD' : 'EDIT';
   }
 
-  loadFormData() {
+  loadFormData(): void {
     if (this.formOperation === 'ADD') {
       this.defaultFormData = {
         image: null,
@@ -92,7 +92,7 @@ export class ProfileFormComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  deleteUser(): void {
+  onDeleteUser(): void {
     if (this.defaultFormData._id) {
       this.usersStore.deleteUser(this.defaultFormData._id);
       this.goBack();
@@ -100,7 +100,12 @@ export class ProfileFormComponent implements OnInit {
   }
 
   cancel(): void {
-    this.goBack();
+    if (
+      !this.userForm.dirty ||
+      confirm('Do you want to Discard your changes')
+    ) {
+      this.goBack();
+    }
   }
 
   submit(): void {
