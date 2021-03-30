@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UsersStore } from '@app/users/store/users.store';
 
 @Component({
   selector: 'zensar-users',
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
-  constructor() {}
+  constructor(public usersStore: UsersStore) {}
 
   ngOnInit(): void {}
 }

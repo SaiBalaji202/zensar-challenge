@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@src/environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { shareReplay, tap } from 'rxjs/operators';
+import { delay, shareReplay, tap } from 'rxjs/operators';
 import { UserProfile } from '../models/profile.model';
 import { SpinnerService } from './../../shared/UIElements/spinner/spinner.service';
 
@@ -10,7 +10,7 @@ import { SpinnerService } from './../../shared/UIElements/spinner/spinner.servic
   providedIn: 'root',
 })
 export class UsersStore {
-  private usersSubject = new BehaviorSubject<UserProfile[]>([]);
+  private usersSubject = new BehaviorSubject<UserProfile[]>(null);
   users$ = this.usersSubject.asObservable();
   URL = environment.api.url + '/user';
 
@@ -21,7 +21,6 @@ export class UsersStore {
   private fetchUserProfiles(): Observable<UserProfile[]> {
     const users$ = this.http.get<UserProfile[]>(this.URL).pipe(
       tap((users) => {
-        console.log(users);
         this.usersSubject.next(users);
       }),
       shareReplay()
@@ -31,6 +30,21 @@ export class UsersStore {
 
   public getUserById(userId: string): UserProfile {
     return this.usersSubject.getValue()?.find((user) => user._id === userId);
+  }
+
+  public addUser(name: string, image: Blob): Observable<UserProfile> {
+    const userFormData = new FormData();
+    userFormData.append('name', name);
+    userFormData.append('image', image);
+
+    const pushUser$ = this.http.post<UserProfile>(this.URL, userFormData).pipe(
+      tap((newUser) => {
+        const users = this.usersSubject.getValue();
+        users.push(newUser);
+        this.usersSubject.next(users);
+      })
+    );
+    return this.loading.spinUntilComplete(pushUser$);
   }
 
   public updateUser(
@@ -45,31 +59,16 @@ export class UsersStore {
     const updateUser$ = this.http
       .put<UserProfile>(this.URL + '/' + userId, userFormData)
       .pipe(
-        tap((user) => {
+        tap((updatedUser) => {
           const users = this.usersSubject.getValue();
           const idx = users?.findIndex((user) => user._id === userId);
           if (idx && idx !== -1) {
-            users[idx] = { ...user };
+            users[idx] = { ...updatedUser };
             this.usersSubject.next(users);
           }
         })
       );
     return this.loading.spinUntilComplete(updateUser$);
-  }
-
-  public addUser(name: string, image: Blob): Observable<UserProfile> {
-    const userFormData = new FormData();
-    userFormData.append('name', name);
-    userFormData.append('image', image);
-
-    const pushUser$ = this.http.post<UserProfile>(this.URL, userFormData).pipe(
-      tap((user) => {
-        const users = this.usersSubject.getValue();
-        users.push(user);
-        this.usersSubject.next(users);
-      })
-    );
-    return this.loading.spinUntilComplete(pushUser$);
   }
 
   public deleteUser(userId: string): Observable<any> {
